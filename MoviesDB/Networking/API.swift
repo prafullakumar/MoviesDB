@@ -57,7 +57,7 @@ extension MoviesAPI: TargetType {
         switch self {
         case .recommended, .latest:
             if let filepath = Bundle.main.path(forResource: "stub", ofType: "json") {
-                return try! Data(contentsOf: URL(string: filepath)!) // stub shold crash on exection for better debugability
+                return try! Data(contentsOf: URL(fileURLWithPath: filepath)) // stub shold crash on exection for better debugability
             } else {
                 return Data()
             }

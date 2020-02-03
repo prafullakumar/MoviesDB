@@ -14,7 +14,7 @@ import Moya
 
 class ViewModelTest: XCTestCase {
 
-    
+    var completion: ((Bool) -> Void)?
     let networking = Networking.init(provider: MoyaProvider<MoviesAPI>(stubClosure: MoyaProvider.immediatelyStub))
     
     override func setUp() {
@@ -26,15 +26,27 @@ class ViewModelTest: XCTestCase {
     }
 
     func testGetSimilarMovies() {
+        let expectation = self.expectation(description: "Stub should work")
         let viewmodel = MoviesViewModel.init(detailObject: MovieList.Result.init(popularity: 10, voteCount: 5, video: false, posterPath: "", id: 123, adult: true, backdropPath: nil, originalLanguage: nil, originalTitle: nil, genreIDS: nil, title: nil, voteAverage: nil, overview: nil, releaseDate: nil))
         viewmodel.delegate = self
+        completion = { (isSucces) in
+            XCTAssert(isSucces)
+            expectation.fulfill()
+        }
         viewmodel.fetchData()
+        waitForExpectations(timeout: 45, handler: nil)
     }
     
     func testGetTrendingMovies() {
+        let expectation = self.expectation(description: "Stub should work")
         let viewmodel = MoviesViewModel()
         viewmodel.delegate = self
+        completion = { (isSucces) in
+            XCTAssert(isSucces)
+            expectation.fulfill()
+        }
         viewmodel.fetchData()
+        waitForExpectations(timeout: 45, handler: nil)
     }
 
 
@@ -46,11 +58,11 @@ extension ViewModelTest: MovieViewControllerUpdateDelegate {
         case .loading:
             break
         case .loadSuccess:
-            XCTAssert(true)
+            completion?(true)
         case .loadFail:
-            XCTAssert(false)
+            completion?(false)
         case .unknown:
-            XCTAssert(true)
+            completion?(false)
         }
     }
     

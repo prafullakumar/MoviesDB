@@ -1,12 +1,9 @@
 os: osx
 osx_image: xcode11.3
 language: swift
-xcode_project: MoviesDB.xcodeproj # path to your xcodeproj folder
-xcode_scheme: MoviesDBTests
-xcode_destination: platform=iOS Simulator,OS=11.3,name=iPhone X
 podfile: Podfile
 bundle exec pod install
 install: make get-deps
-script xcodebuild clean build test -workspace xcode_project -scheme xcode_scheme -sdk iphonesimulator -destination xcode_destination ONLY_ACTIVE_ARCH=NO CODE_SIGNING_REQUIRED=NO
+script xcodebuild clean build test -workspace "MoviesDB.xcworkspace" -scheme "MoviesDB" -sdk "iphonesimulator" -destination "platform=iOS Simulator,OS=13.3,name=iPhone 8" ONLY_ACTIVE_ARCH=NO CODE_SIGNING_REQUIRED=NO 
 
 
